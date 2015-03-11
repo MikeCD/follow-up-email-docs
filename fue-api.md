@@ -24,7 +24,7 @@ You may use HTTP Basic Auth by providing the API Consumer Key as the username an
 
 ### Over HTTP
 
-The API uses a ["one-legged" oAuth implementation](http://tools.ietf.org/html/rfc5849). See this [PHP Client](https://github.com/kloon/WooCommerce-REST-API-Client-Library/blob/master/class-wc-api-client.php) for an example implementation.
+The API uses a ["one-legged" oAuth implementation](http://tools.ietf.org/html/rfc5849). See this [PHP Client](https://gist.github.com/75nineteen/db277427bf16880c7d17) for an example implementation.
 
 ## Pagination
 
@@ -57,7 +57,8 @@ __Basic Parameters__
 
 | Parameter         | Email Type | Description 
 |-------------------|:----------:|-------------
-| type              | All        | The email's type. See [Email Types](#email-types) 
+| type              | All        | The email's type. See [Email Types](#email-types)
+| template          | All        | The email template to use. Defaults to `WooCommerce`.
 | name              | All        | The name used to identify the email 
 | subject           | All        | The email's subject line
 | message           | All        | Content body of the email. HTML or plain-text.
@@ -70,6 +71,7 @@ __Basic Parameters__
 | send\_date        | All        | Used when the `interval` is 'date', in [ISO 8601 format](http://www.w3.org/QA/Tips/iso-date)
 | product\_id       | storewide, reminder, subscription, wootickets | The email will only be triggered if the purchased product matches this setting
 | category\_id      | storewide  | Similar in nature to `product_id` but only available to `storewide` emails
+| campaign          | All        | The campaign(s) this email belongs to. Campaign will be created if it doesn't exist. Separate with comma if passing multiple campaigns. See [Campaigns](#campaigns)
 
 __@todo Document custom and advanced parameters__
 
@@ -78,12 +80,16 @@ Returns an `email` object on success
     {
         email: {
             id: "101",
+            template: "WooCommerce",
             name: "After Sales Email"
             subject: "Thank You for Your Purchase!",
             message: "...",
             trigger: "processing",
             interval: 10,
             duration: "minutes",
+            campaigns: [
+                "sales"
+            ],
             ...
         }
     }
@@ -104,6 +110,7 @@ Updates an existing email using the same parameters for creating new emails.
 |-----------|--------------
 | type      | The email type (e.g. `storewide`)
 | status    | Email status. `active`, `inactive` or `archived`
+| campaign  | Only show emails under the given campaign
 | limit     | The number of results to return per page
 
     GET /emails?filter[type]=signup&filter[status]=active&filter[limit]=10
@@ -114,6 +121,7 @@ Returns a list of `email`s
         {
             email: {
                 id: "101",
+                template: "WooCommerce",
                 name: "After Sales Email"
                 subject: "Thank You for Your Purchase!",
                 message: "...",
@@ -126,6 +134,7 @@ Returns a list of `email`s
         {
             email: {
                 id: "109",
+                template: "Sensei",
                 name: "Course Sign Up",
                 subject: "Welcome to {course_name}!",
                 message: "...",
@@ -146,6 +155,7 @@ Returns an `email` object.
     {
         email: {
             id: "101",
+            template: "WooCommerce",
             name: "After Sales Email"
             subject: "Thank You for Your Purchase!",
             message: "...",
@@ -155,6 +165,108 @@ Returns an `email` object.
             ...
         }
     }
+    
+## Campaigns
+    
+### List Campaigns
+
+    GET /campaigns
+    
+Returns a list of `campaign`s
+
+    [
+        {
+        "campaign": 
+        {
+            "id": "api",
+            "name": "API"
+        }
+    },
+    {
+        "campaign": 
+            {
+                "id": "intro",
+                "name": "Intro"
+            }
+        }
+    ]
+    
+### List All Emails in a Campaign
+
+    GET /campaigns/<id>
+    
+Returns a list of `email`s
+
+    
+
+    [
+       {
+           "email":
+           {
+               "id": 3455,
+               "created_at": "2015-01-15 07:13:04",
+               "type": "storewide",
+               "template": "WooCommerce",
+               "name": "Your Order - {store_name}",
+               "subject": "Order Complete",
+               "message": "{section:header}Hello {customer_name}!{/section}",
+               "status": "archived",
+               "trigger": "completed",
+               "trigger_string": "10 minutes after Order Status: completed",
+               "interval": "10",
+               "duration": "minutes",
+               "always_send": "0",
+               "product_id": "0",
+               "category_id": "0",
+               "campaigns":
+               [
+                   "order-flow"
+               ]
+           }
+       },
+       ...
+    ]
+
+## Email Templates
+    
+### List Templates
+
+    GET /emails/templates
+    
+Returns a list of `template`s
+
+    [
+       {
+           "template":
+           {
+               "id": "fue-responsive-one-column.html",
+               "name": "Responsive 1 Column",
+               "sections":
+               [
+                   "teaser",
+                   "image_600px-wide",
+                   "title",
+                   "subtitle",
+                   "body_one",
+                   "title_two",
+                   "subtitle_two",
+                   "body_two",
+                   "address"
+               ]
+           }
+       },
+       {
+           "template":
+           {
+               "id": "WooCommerce",
+               "name": null,
+               "sections":
+               [
+               ]
+           }
+       }
+    ]
+
 
 ## Queue
 
@@ -170,7 +282,7 @@ Returns an `email` object.
 | user_email            | Match the recipient's email address
 | order_id              | WooCommerce Order ID that triggered the email
 | product_id            | WooCommerce Product ID that triggered the email
-| email_id              | Return items matching the email ID
+| email                 | Return item's linked `email` object
 | cart                  | Boolean. Pass `true` to retrieve cart emails
 | sent                  | Boolean. Pass `true` to retrieve sent items
 | status                | `0`: Suspended; `1`: Active
@@ -192,7 +304,7 @@ Returns a list of `item`s
           "user_email": "john@test.com",
           "order_id": "0",
           "product_id": "0",
-          "email_id": "906",
+          "email": {...},
           "date_scheduled": "2014-12-17T08:06:50Z",
           "is_cart": "0",
           "is_sent": "0",
@@ -219,7 +331,7 @@ Returns a list of `item`s
           "user_email": "",
           "order_id": "1150",
           "product_id": "0",
-          "email_id": "630",
+          "email": {...},
           "date_scheduled": "2014-12-04T07:59:25Z",
           "is_cart": "0",
           "is_sent": "1",
@@ -244,7 +356,7 @@ Returns an `item` object
         "user_email": "",
         "order_id": "1150",
         "product_id": "0",
-        "email_id": "630",
+        "email": {...},
         "date_scheduled": "2014-12-04T07:59:25Z",
         "is_cart": "0",
         "is_sent": "1",
