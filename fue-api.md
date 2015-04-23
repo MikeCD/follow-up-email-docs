@@ -166,6 +166,25 @@ Returns an `email` object.
         }
     }
     
+### Send a Manual Email
+
+    POST /emails/send/<id>
+    
+Sends a `manual` email.
+
+__Parameters__
+
+| Param                 | Descriptions
+|-----------------------|----------------
+| send_type             | `email` or `subscribers` are supported by default.
+| recipient_email       | Email address of the recipient if `send_type` is `email`
+| schedule_email        | `1` to enable scheduling. Defaults to `0`
+| sending_schedule_date | Required if `schedule_email` is enabled. RFC3339 date/time format
+| send_again            | `1` to send the same email again after a certain period of time. Defaults to `0`
+| interval              | Integer used in scheduling the second email
+| interval_duration     | Valid values are `minutes`, `hours`, `days`, `weeks`, `months` or `years`
+| tracking              | Google Analytics tracking code that will be appended to URLs in the email
+    
 ## Campaigns
     
 ### List Campaigns
