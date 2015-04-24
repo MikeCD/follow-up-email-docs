@@ -72,6 +72,7 @@ __Basic Parameters__
 | product\_id       | storewide, reminder, subscription, wootickets | The email will only be triggered if the purchased product matches this setting
 | category\_id      | storewide  | Similar in nature to `product_id` but only available to `storewide` emails
 | campaign          | All        | The campaign(s) this email belongs to. Campaign will be created if it doesn't exist. Separate with comma if passing multiple campaigns. See [Campaigns](#campaigns)
+| requirements      | storewide  | Set additional requirements that allows for a more controlled email sending. See [Requirements](#requirements)
 
 __@todo Document custom and advanced parameters__
 
@@ -216,8 +217,6 @@ Returns a list of `campaign`s
     
 Returns a list of `email`s
 
-    
-
     [
        {
            "email":
@@ -245,6 +244,27 @@ Returns a list of `email`s
        },
        ...
     ]
+    
+## Requirements
+
+### Requirement Types
+
+| Identifier                | Description
+----------------------------|--------------
+| bought_products           | Restrict email to customers who have bought any of the specified product IDs
+| bought_categories         | Similar to `bought_products` except that the check is made against the category IDs a customer had previously bought products from
+| first_purchase            | Email will match customers who are purchasing for the first time
+| order_total_below         | Match orders where the order total **is below** the specified value
+| order_total_above         | Match orders where the order total **exceeds** the specified value
+| total_orders_below        | Match customers whose number of orders **is below** the specified value
+| total_orders_above        | Match customers whose number of orders **exceeds** the specified value
+| total_purchases_below     | Match customers whose accumulated order total **is below** the specified value
+| total_purchases_above     | Match customers whose accumulated order total **exceeds** the specified value
+
+### Usage
+
+
+    
 
 ## Email Templates
     
