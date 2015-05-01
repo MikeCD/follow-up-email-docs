@@ -179,6 +179,7 @@ __Parameters__
 |-----------------------|----------------
 | send_type             | `email` or `subscribers` are supported by default.
 | recipient_email       | Email address of the recipient if `send_type` is `email`
+| email_list            | The `list` to send to the email to if `send_type` is `subscribers`. Passing an empty value will send to all subscribers.
 | schedule_email        | `1` to enable scheduling. Defaults to `0`
 | sending_schedule_date | Required if `schedule_email` is enabled. RFC3339 date/time format
 | send_again            | `1` to send the same email again after a certain period of time. Defaults to `0`
@@ -245,6 +246,85 @@ Returns a list of `email`s
        ...
     ]
     
+## Newsletters
+
+### List Newsletter Lists
+
+    GET /newsletter/lists
+    
+Returns all available newsletter lists
+
+    {
+        "lists":
+        [
+            "campaign2015",
+            "customers"
+        ]
+    }
+
+### List Subscribers
+
+    GET /newsletter/subscribers?filter[list]=campaign2015
+    
+Returns a list of `subscriber`s. A filter is available to only return subscribers belonging to a particular `list`.
+
+    [
+        {
+            "subscriber":
+            {
+                "id": "11",
+                "email": "jdoe@example.com",
+                "date_added": "2015-04-09 09:38:57",
+                "email_list": "campaign2015"
+            }
+        },
+        ...
+    ]
+    
+### Add New Subscribers
+
+    POST /newsletter/subscribers
+    
+| Key       | Description
+------------|----------------
+| email     | The email address to add. Separate emails using a comma to add multiple emails at once
+| list      | The list to add the emails to
+
+Returns a list of the created `subscribers`
+
+    {
+        "subscribers":
+        [
+            {
+                "id": "25",
+                "email": "demo1@example.com",
+                "date_added": "2015-04-28 11:31:32",
+                "email_list": ""
+            },
+            {
+                "id": "26",
+                "email": "demo2@example.com",
+                "date_added": "2015-04-28 11:31:32",
+                "email_list": ""
+            },
+            {
+                "id": "27",
+                "email": "demo3@example.com",
+                "date_added": "2015-04-28 11:31:32",
+                "email_list": ""
+            }
+        ]
+    }
+
+
+### Delete Subscribers
+
+    DELETE /newsletter/subscribers
+    
+| Key       | Description
+|-----------|--------------
+| email     | The email address to delete. Separate emails using a comma to delete multiple emails at once.
+    
 ## Requirements
 
 ### Requirement Types
@@ -260,11 +340,6 @@ Returns a list of `email`s
 | total_orders_above        | Match customers whose number of orders **exceeds** the specified value
 | total_purchases_below     | Match customers whose accumulated order total **is below** the specified value
 | total_purchases_above     | Match customers whose accumulated order total **exceeds** the specified value
-
-### Usage
-
-
-    
 
 ## Email Templates
     
