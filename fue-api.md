@@ -72,7 +72,7 @@ __Basic Parameters__
 | product\_id       | storewide, reminder, subscription, wootickets | The email will only be triggered if the purchased product matches this setting
 | category\_id      | storewide  | Similar in nature to `product_id` but only available to `storewide` emails
 | campaign          | All        | The campaign(s) this email belongs to. Campaign will be created if it doesn't exist. Separate with comma if passing multiple campaigns. See [Campaigns](#campaigns)
-| requirements      | storewide  | Set additional requirements that allows for a more controlled email sending. See [Requirements](#requirements)
+| requirements      | storewide, sensei  | Set additional requirements that allows for a more controlled email sending. See [Requirements](#requirements-1)
 
 __@todo Document custom and advanced parameters__
 
@@ -316,30 +316,40 @@ Returns a list of the created `subscribers`
         ]
     }
 
+### Edit a Subscriber
+
+    POST /newsletter/subscribers/<id>
+    
+| Key       | Description
+------------|--------------
+| email     | Optional. Change the email address of the subscriber.
+| lists     | Optional. Assign subscriber to the given lists. Separate with comma if using multiple lists. Pass an empty value to remove from all lists.
 
 ### Delete Subscribers
 
-    DELETE /newsletter/subscribers
-    
-| Key       | Description
-|-----------|--------------
-| email     | The email address to delete. Separate emails using a comma to delete multiple emails at once.
+    DELETE /newsletter/subscribers/<id>
     
 ## Requirements
 
 ### Requirement Types
 
-| Identifier                | Description
-----------------------------|--------------
-| bought_products           | Restrict email to customers who have bought any of the specified product IDs
-| bought_categories         | Similar to `bought_products` except that the check is made against the category IDs a customer had previously bought products from
-| first_purchase            | Email will match customers who are purchasing for the first time
-| order_total_below         | Match orders where the order total **is below** the specified value
-| order_total_above         | Match orders where the order total **exceeds** the specified value
-| total_orders_below        | Match customers whose number of orders **is below** the specified value
-| total_orders_above        | Match customers whose number of orders **exceeds** the specified value
-| total_purchases_below     | Match customers whose accumulated order total **is below** the specified value
-| total_purchases_above     | Match customers whose accumulated order total **exceeds** the specified value
+| Identifier                | Email Type | Description
+----------------------------|------------|---------------------------------
+| bought_products           | storewide  | Restrict email to customers who have bought any of the specified product IDs
+| bought_categories         | storewide  | Similar to `bought_products` except that the check is made against the category IDs a customer had previously bought products from
+| first_purchase            | storewide  | Email will match customers who are purchasing for the first time
+| order_total_below         | storewide  | Match orders where the order total **is below** the specified value
+| order_total_above         | storewide  | Match orders where the order total **exceeds** the specified value
+| total_orders_below        | storewide  | Match customers whose number of orders **is below** the specified value
+| total_orders_above        | storewide  | Match customers whose number of orders **exceeds** the specified value
+| total_purchases_below     | storewide  | Match customers whose accumulated order total **is below** the specified value
+| total_purchases_above     | storewide  | Match customers whose accumulated order total **exceeds** the specified value
+| have_not_started_first_lesson | sensei | Match learners who are signed up to a course but have not started the first lesson. Specify a course by passing a course ID as the value.  
+| have_not_completed_a_lesson   | sensei | Match learners who are signed up to a course but have not completed any lessons. Specify a course by passing a course ID as the value.
+| have_not_completed_a_course   | sensei | Match learners who are signup up but have not yet completed a course. Specify a course by passing a course ID as the value.
+| have_not_taken_quiz           | sensei | Match learners who have not yet taken a quiz. Specify a lesson by passing a lesson ID as the value.
+| have_failed_quiz              | sensei | Match learners who have failed a lesson quiz. Specify a lesson by passing a lesson ID as the value.
+| have_passed_quiz              | sensei | Match learners who have passed a lesson quiz. Specify a lesson by passing a lesson ID as the value.
 
 ## Email Templates
     
@@ -757,6 +767,8 @@ Returns an `optouts` object
 
 
 # Email Types
+
+    GET /
 
 ## Follow-Up Emails
 
