@@ -1,4 +1,4 @@
-{
+[
     {
         "slug": "fue-responsive-one-column",
         "name": "Responsive 1 Column",
@@ -23,4 +23,4 @@
         "description": "Responsive 3-Column with Hero template",
         "url": "https://raw.githubusercontent.com/75nineteen/follow-up-email-docs/master/templates/v4/fue-responsive-three-columns-with-hero/template.html"
     }
-}
+]
