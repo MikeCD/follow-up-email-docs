@@ -1,0 +1,26 @@
+{
+    {
+        "slug": "fue-responsive-one-column",
+        "name": "Responsive 1 Column",
+        "thumbnail": "https://raw.githubusercontent.com/75nineteen/follow-up-email-docs/master/templates/v4/fue-responsive-one-column/200x200.png",
+        "image": "https://raw.githubusercontent.com/75nineteen/follow-up-email-docs/master/templates/v4/fue-responsive-one-column/600x600.png",
+        "description": "Responsive 1 Column template",
+        "url": "https://raw.githubusercontent.com/75nineteen/follow-up-email-docs/master/templates/v4/fue-responsive-one-column/template.html"
+    },
+    {
+        "slug": "fue-responsive-two-columns",
+        "name": "Responsive 2 Columns",
+        "thumbnail": "https://raw.githubusercontent.com/75nineteen/follow-up-email-docs/master/templates/v4/fue-responsive-two-columns/200x200.png",
+        "image": "https://raw.githubusercontent.com/75nineteen/follow-up-email-docs/master/templates/v4/fue-responsive-two-columns/600x600.png",
+        "description": "Responsive 2-Column template",
+        "url": "https://raw.githubusercontent.com/75nineteen/follow-up-email-docs/master/templates/v4/fue-responsive-two-columns/template.html"
+    },
+    {
+        "slug": "fue-responsive-three-columns-with-hero",
+        "name": "Responsive 3 Columns with Hero",
+        "thumbnail": "https://raw.githubusercontent.com/75nineteen/follow-up-email-docs/master/templates/v4/fue-responsive-three-columns-with-hero/200x200.png",
+        "image": "https://raw.githubusercontent.com/75nineteen/follow-up-email-docs/master/templates/v4/fue-responsive-three-columns-with-hero/600x600.png",
+        "description": "Responsive 3-Column with Hero template",
+        "url": "https://raw.githubusercontent.com/75nineteen/follow-up-email-docs/master/templates/v4/fue-responsive-three-columns-with-hero/template.html"
+    }
+}
